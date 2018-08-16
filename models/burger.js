@@ -1,21 +1,37 @@
 var orm = require("../config/orm.js");
 
+
 var burger = {
-  all: function(bg) {
+  all: function(cb) {
+
+    
     orm.all("burgers", function(res) {
-      bg(res);
+      console.log("In All ORM : " + res);
+      cb(res);
     });
   },
-  // The variables cols and vals are arrays.
-  create: function(cols, vals, bg) {
+  create: function(name, cb) {
+    console.log("In Create ORM : " + name.toString());
+    var vals = [
+      name, false
+    ];
+    var cols = [
+      "burger_name", "devoured"
+    ];
     orm.create("burgers", cols, vals, function(res) {
-      bg(res);
+      cb(res);
     });
   },
-  update: function(objColVals, condition, bg) {
-    orm.update("burgers", objColVals, condition, function(res) {
-      bg(res);
-    });
-}
+  update: function(id, cb) {
+
+    console.log("In Update ORM : " + id);
+    var condition = "id=" + id;
+    orm.update("burgers", {
+      devoured: true
+    }, condition, function(res) {
+      cb(res);
+    }
+);
+  }
 };
 module.exports = burger;
